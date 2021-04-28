@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <algorithm>
 using namespace std;
 struct IntNodeType
 {
@@ -207,6 +209,7 @@ public:
     void addEdge(int fromV, int toV, int weight);
     void getAdjacent(int vertex, IntQue &adjQ);
     void MinPath(int from, int to);
+    int getIndex(string s);
 };
 Graph::Graph()
 {
@@ -359,7 +362,9 @@ void Graph::MinPath(int from, int to)
     //write code here to display the item
     //display the target vertex distance from the start vertex.
     //display the path from the start vertex to the target vertex.
-    cout << "min distance from " << vertices[from] << " to " << vertices[to] << " is " << item.dist << endl;
+    vertices[from].erase(std::remove(vertices[from].begin(), vertices[from].end(), '\n'), vertices[from].end());
+    vertices[to].erase(std::remove(vertices[to].begin(), vertices[to].end(), '\n'), vertices[to].end());
+    cout << "Min distance from " << vertices[from] << " to " << vertices[to] << item.dist << endl;
     cout << "path:" << endl;
     int i;
     for (i = 0; i < item.pathlen; i++)
@@ -367,9 +372,22 @@ void Graph::MinPath(int from, int to)
         cout << vertices[item.path[i]] << endl;
     }
 }
+
+int Graph::getIndex(string s)
+{
+    int i;
+    for (;;)
+    {
+        if (vertices[i] == s)
+            break;
+        else
+            i++;
+    }
+    return i;
+}
+
 int main()
 {
-    //cout << "Hi" << endl;
     //Create a Graph object
     Graph graph;
     string vertexName[20];
@@ -380,12 +398,14 @@ int main()
     //input vertex number from the file.
     //input vertex name from the file.
     ifstream fin;
-    fin.open("MinPath1.txt");
+    fin.open("MinPath2.txt");
     fin >> verNum;
     while (verNum >= 0)
     {
-        fin >> verName;
+        // fin >> verName;
+        getline(fin >> std::ws, verName);
         //add the vertex to the graph
+        verName.erase(std::remove(verName.begin(), verName.end(), '\n'), verName.end());
         graph.addVertex(verName);
         fin >> verNum;
     }
@@ -400,17 +420,15 @@ int main()
         graph.addEdge(startVertex, endVertex, weight);
         fin >> startVertex;
     }
-    //Input vertices edges from the input file.
-    //Repeatedly do the following until a negative value for a vertex is read.
-    //input startVertex number of the edge from the file.
-    //input endVertex number of the edge from the file.
-    //input weight from the file.
-    //register the edge in edges matrix.
-    // Graph.addEdge (startVertex, endVertex, weight);
-    //Repeat the following till the user enters a negative value for start vertex
-    //input the start vertex from the user.
+    string strStart, strEnd;
+    int intStart, intEnd, i;
+    cout << "Enter start: ";
+    cin >> strStart;
+    cout << "\nEnter end: ";
+    cin >> strEnd;
+
     //call graph.breadthFirst (startVertex)
     //call graph.depthFirst (startVertex)
-    graph.MinPath(0, 4);
+    graph.MinPath(0, 1);
     return 0;
 }
