@@ -50,7 +50,7 @@ void IntQue ::enque(int i)
 //pre: que is NOT empty
 void IntQue::deque(int &i)
 {
-    //fill out the rec using head.
+    //fill out the rec using head.'
     i = head->i;
     //Remove the node
     head = head->link;
@@ -243,6 +243,7 @@ void Graph::getAdjacent(int vertex, IntQue &adjQ)
             adjQ.enque(i);
     }
 }
+
 void Graph::MinPath(int from, int to)
 {
     //ItemQue is a priority que that queus ItemType items.
@@ -362,8 +363,6 @@ void Graph::MinPath(int from, int to)
     //write code here to display the item
     //display the target vertex distance from the start vertex.
     //display the path from the start vertex to the target vertex.
-    vertices[from].erase(std::remove(vertices[from].begin(), vertices[from].end(), '\n'), vertices[from].end());
-    vertices[to].erase(std::remove(vertices[to].begin(), vertices[to].end(), '\n'), vertices[to].end());
     cout << "Min distance from " << vertices[from] << " to " << vertices[to] << item.dist << endl;
     cout << "path:" << endl;
     int i;
@@ -375,20 +374,28 @@ void Graph::MinPath(int from, int to)
 
 int Graph::getIndex(string s)
 {
-    int i;
-    for (;;)
+    int i = 0;
+    int n;
+
+    while (i < 50)
     {
-        if (vertices[i] == s)
-            break;
+        if (s == vertices[i])
+        {
+            n = i;
+        }
         else
+        {
             i++;
+            continue;
+        }
     }
-    return i;
+    return n;
 }
 
 int main()
 {
     //Create a Graph object
+    cout << "Hey";
     Graph graph;
     string vertexName[20];
     int verNum;
@@ -400,14 +407,17 @@ int main()
     ifstream fin;
     fin.open("MinPath2.txt");
     fin >> verNum;
+
     while (verNum >= 0)
-    {
-        // fin >> verName;
-        getline(fin >> std::ws, verName);
+    {   
+        string d;
+        fin >> verName;
+        //getline(fin >> std::ws, verName);
+        
         //add the vertex to the graph
-        verName.erase(std::remove(verName.begin(), verName.end(), '\n'), verName.end());
         graph.addVertex(verName);
         fin >> verNum;
+        
     }
     int startVertex, endVertex, weight;
     fin >> startVertex;
@@ -421,7 +431,8 @@ int main()
         fin >> startVertex;
     }
     string strStart, strEnd;
-    int intStart, intEnd, i;
+    int start, end, i;
+    cout << "Heyo" << graph.getIndex("NY");
     cout << "Enter start: ";
     cin >> strStart;
     cout << "\nEnter end: ";
@@ -429,6 +440,12 @@ int main()
 
     //call graph.breadthFirst (startVertex)
     //call graph.depthFirst (startVertex)
-    graph.MinPath(0, 1);
+
+    
+
+    graph.MinPath(graph.getIndex(strStart), graph.getIndex(strEnd));
+
     return 0;
 }
+
+// because of getline getting extra spaces, getLine cannot match with the input string.
