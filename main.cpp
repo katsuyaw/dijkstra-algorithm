@@ -405,8 +405,6 @@ int main ( )
 
           string strStart, strEnd;
             int start, end, i;
-            //cout << graph.getIndex(“NY”) << endl;
-            //graph.MinPath(0, 8);
             cout << "Enter start: ";
             getline(cin, strStart);
             
